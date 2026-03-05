@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/API/" />
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Product/">
+    <Project Path="Pazario.Products.Application/Pazario.Products.Application.csproj" Id="339f879a-6a1a-4dde-b374-a1e359b3c495" />
+    <Project Path="Pazario.Products.Domain/Pazario.Products.Domain.csproj" />
+  </Folder>
+</Solution>
