@@ -8,13 +8,13 @@ namespace Pazario.Products.Domain.Models
 {
     public class Model : BaseEntity
     {
-        private Model()
+        public Model()
         {
             Products = new HashSet<Products.Product>();
         }
-        public Name Name { get; private set; }
-        public long MarkaId { get; private set; }
-        public Markas.Marka Marka { get; private set; }
-        public HashSet<Products.Product> Products { get; private set; }
+        public Name Name { get; set; }
+        public Guid MarkaId { get; set; }
+        public Markas.Marka Marka { get; init; }
+        public HashSet<Products.Product> Products { get; init; }
     }
 }

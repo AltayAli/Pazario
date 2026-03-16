@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Pazario.Products.Domain.Abstractions
 {
@@ -23,6 +25,7 @@ namespace Pazario.Products.Domain.Abstractions
         }
         public bool IsSuccess { get; }
         public bool IsFailure => !IsSuccess;
+        [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
         public Error? Error { get; }
         public static Result Success() => new Result(true, Error.None);
         public static Result Failure(Error error) => new Result(false, error);
