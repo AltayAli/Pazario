@@ -10,7 +10,7 @@ using System.Text;
 namespace Pazario.Products.Application.Markas.Commands.UpdateMarka
 {
     public class UpdateMarkaCommandHandler
-        (ICachedMarkasRepository markasRepository,
+        (IMarkasRepository markasRepository,
         IUnitOfWork unitOfWork)
         : ICommandHandler<UpdateMarkaCommand>
     {

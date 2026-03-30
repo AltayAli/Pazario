@@ -1,7 +1,4 @@
 ﻿using Pazario.Products.Domain.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.Common
 {
@@ -18,5 +15,6 @@ namespace Pazario.Products.Domain.Common
         public static implicit operator string(Name n) => n?.Value;
         public static explicit operator Name(string n) => new Name(n);
         public override string ToString() => Value;
+        public string ToNormalizedString() => Value.Trim().ToLower();
     }
 }

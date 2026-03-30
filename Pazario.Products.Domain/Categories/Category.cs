@@ -9,14 +9,16 @@ namespace Pazario.Products.Domain.Categories
 {
     public class Category : BaseEntity
     {
-        private Category()
+        public Category()
         {
             Properties = new HashSet<CategoryProperty>();
+            Children = new HashSet<Category>();
         }
-        public Name Name { get; private set; }
-        public long ParentId { get; private set; }
-        public Category Parent { get; private set; }
-        public Icon Icon { get; private set; }
-        public HashSet<CategoryProperty> Properties { get; private set; }
+        public Name Name { get; set; }
+        public Guid? ParentId { get; set; }
+        public Category Parent { get; set; }
+        public Icon? Icon { get; set; }
+        public HashSet<Category> Children { get; set; }
+        public HashSet<CategoryProperty> Properties { get; set; }
     }
 }

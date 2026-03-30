@@ -4,7 +4,7 @@ using Pazario.Products.Domain.Models;
 
 namespace Pazario.Products.Application.Models.Queries.GetModels
 {
-    public class GetModelsQueryHandler (ICachedModelsRepository modelsRepository)
+    public class GetModelsQueryHandler (IModelsRepository modelsRepository)
         : IQueryHandler<GetModelsQuery, List<GetModelsQueryResponse>>
     {
         public async Task<Result<List<GetModelsQueryResponse>>> Handle(GetModelsQuery request, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Pazario.Products.Application.Models.Commands.RemoveModel
 {
-    public class RemoveModelCommandHandler (ICachedModelsRepository modelsRepository,
+    public class RemoveModelCommandHandler (IModelsRepository modelsRepository,
         IUnitOfWork unitOfWork)
         : ICommandHandler<RemoveModelCommand>
     {

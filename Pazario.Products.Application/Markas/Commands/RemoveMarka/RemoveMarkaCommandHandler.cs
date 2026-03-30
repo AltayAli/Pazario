@@ -9,7 +9,7 @@ using System.Text;
 namespace Pazario.Products.Application.Markas.Commands.RemoveMarka
 {
     public class RemoveMarkaCommandHandler 
-        (ICachedMarkasRepository markasRepository,
+        (IMarkasRepository markasRepository,
         IUnitOfWork unitOfWork)
         : ICommandHandler<RemoveMarkaCommand>
     {

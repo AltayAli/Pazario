@@ -8,11 +8,8 @@ namespace Pazario.Products.Domain.CategoryPropertyValues
 {
     public class CategoryPropertyValue : BaseEntity
     {
-        private CategoryPropertyValue()
-        {
-        }
-        public long CategoryPropertyId { get; private set; }
-        public CategoryProperty CategoryProperty { get; private set; }
-        public string Value { get; private set; }
+        public Guid CategoryPropertyId { get; set; }
+        public CategoryProperty CategoryProperty { get; set; }
+        public string Value { get; set; }
     }
 }

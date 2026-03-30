@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Pazario.Products.Domain.CategoryPropertyValues
 {
-    public interface ICateogryPropertyValuesRepository : IBaseRepository<CategoryPropertyValue>
+    public interface ICategoryPropertyValuesRepository : IBaseRepository<CategoryPropertyValue>
     {
     }
 }

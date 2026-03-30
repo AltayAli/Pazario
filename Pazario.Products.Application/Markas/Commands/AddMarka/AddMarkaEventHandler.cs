@@ -17,18 +17,6 @@ namespace Pazario.Products.Application.Markas.Commands.AddMarka
         {
             await cacheService.RemoveAsync(CacheKeys.MarkasCacheKey,cancellationToken);
 
-            // TODO : mapper ile dönüştürülebilir
-            var responseModel = new GetMarkaResponse
-            {
-                Id = notification.Marka.Id,
-                Name = notification.Marka.Name.Value,
-                LastModifiedDate = notification.Marka.ModifiedDate ?? notification.Marka.AddedDate,
-                ModelsCount = notification.Marka.Models.Count
-            };
-            await cacheService.SetAsync(CacheKeys.MarkasCacheKeyPlus(notification.Marka.Id),
-                                        responseModel,
-                                        TimeSpan.FromMinutes(30), 
-                                        cancellationToken);
         }
     }
 }

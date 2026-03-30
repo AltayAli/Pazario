@@ -2,25 +2,22 @@
 using Pazario.Products.Domain.Categories;
 using Pazario.Products.Domain.CategoryPropertyValues;
 using Pazario.Products.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.CategoryProperties
 {
     public class CategoryProperty : BaseEntity
     {
-        private CategoryProperty()
+        public CategoryProperty()
         {
            Values = new HashSet<CategoryPropertyValue>();
         }
-        public long CategoryId { get; private set; }
-        public Category Category { get; private set; }
-        public Name Name { get; private set; }
-        public CategoryPropertyType Type { get; private set; }
-        public bool AddToFilter { get; private set; }
-        public bool IsRequired { get; private set; }
-        public int DisplayOrder { get; private set; }
-        public HashSet<CategoryPropertyValue> Values { get; private set; }
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
+        public Name Name { get; set; }
+        public CategoryPropertyType Type { get; set; }
+        public bool AddToFilter { get; set; }
+        public bool IsRequired { get; set; }
+        public int DisplayOrder { get; set; }
+        public HashSet<CategoryPropertyValue> Values { get; set; }
     }
 }

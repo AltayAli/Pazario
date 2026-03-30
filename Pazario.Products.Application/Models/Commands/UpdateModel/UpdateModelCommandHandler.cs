@@ -7,8 +7,8 @@ using System.Linq.Expressions;
 
 namespace Pazario.Products.Application.Models.Commands.UpdateModel
 {
-    public class UpdateModelCommandHandler (ICachedModelsRepository modelsRepository,
-                                ICachedMarkasRepository markasRepository,
+    public class UpdateModelCommandHandler (IModelsRepository modelsRepository,
+                                IMarkasRepository markasRepository,
                                 IUnitOfWork unitOfWork) : ICommandHandler<UpdateModelCommand>
     {
         public async Task<Result> Handle(UpdateModelCommand request, CancellationToken cancellationToken)

@@ -17,4 +17,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Pazario.Products.Domain\Pazario.Products.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Products\Queries\" />
+    </ItemGroup>
 </Project>

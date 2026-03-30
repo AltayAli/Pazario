@@ -1,0 +1,15 @@
+﻿using Pazario.Products.Domain.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Pazario.Products.Domain.Categories
+{
+    public static class CategoryErrors
+    {
+        public static Error NullValue => new Error("Caregory.NullValue", "Caregory.NullValue");
+        public static Error NotFound => new Error("Caregory.NotFound", "Caregory.NotFound");
+        public static Error MaxLenght => new Error("Caregory.MaxLenght", "Caregory.MaxLenght");
+        public static Error AlreadyExists => new Error("Caregory.AlreadyExists", "Caregory.AlreadyExists");
+    }
+}

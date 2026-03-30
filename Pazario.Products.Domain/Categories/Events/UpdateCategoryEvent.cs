@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pazario.Products.Domain.Markas
+namespace Pazario.Products.Domain.Categories.Events
 {
-    public interface ICachedMarkasRepository : IBaseCachedRepository<Marka>
+    public record UpdateCategoryEvent : IDomainEvent
     {
     }
 }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Pazario.Products.Application.Markas.Queries.GetMarka
 {
-    public class GetMarkaQueryHandler(ICachedMarkasRepository markasRepository) 
+    public class GetMarkaQueryHandler(IMarkasRepository markasRepository) 
                         : IQueryHandler<GetMarkaQuery, GetMarkaResponse>
     {
         public async Task<Result<GetMarkaResponse>> Handle(GetMarkaQuery request, CancellationToken cancellationToken)

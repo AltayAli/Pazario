@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Pazario.Products.Application.Markas.Queries.GetMarkas
 {
-    internal class GetMarkasQueryHandler (ICachedMarkasRepository markasRepository)
+    internal class GetMarkasQueryHandler (IMarkasRepository markasRepository)
         : IQueryHandler<GetMarkasQuery, List<GetMarkasResponse>>
     {
         public async Task<Result<List<GetMarkasResponse>>> Handle(GetMarkasQuery request, CancellationToken cancellationToken)

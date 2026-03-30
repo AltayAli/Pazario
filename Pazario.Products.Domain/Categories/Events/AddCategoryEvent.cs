@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pazario.Products.Domain.Models
+namespace Pazario.Products.Domain.Categories.Events
 {
-    public interface ICachedModelsRepository : IBaseCachedRepository<Model>
+    public record AddCategoryEvent : IDomainEvent
     {
     }
 }

@@ -8,7 +8,7 @@ namespace Pazario.Products.Application.Markas.Commands.AddMarka
 {
     public class AddMarkaCommandHandler(
         IUnitOfWork unitOfWork,
-        ICachedMarkasRepository markasRepository)    
+        IMarkasRepository markasRepository)    
         : ICommandHandler<AddMarkaCommand>
     {
         public async Task<Result> Handle(AddMarkaCommand request, CancellationToken cancellationToken)

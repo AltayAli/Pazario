@@ -14,7 +14,6 @@ namespace Pazario.Products.Application.Markas.Commands.UpdateMarka
         public async Task Handle(UpdateMarkaEvent notification, CancellationToken cancellationToken)
         {
             await cacheService.RemoveAsync(CacheKeys.MarkasCacheKey, cancellationToken);
-            await cacheService.RemoveAsync(CacheKeys.MarkasCacheKeyPlus(notification.Id), cancellationToken);
         }
     }
 }

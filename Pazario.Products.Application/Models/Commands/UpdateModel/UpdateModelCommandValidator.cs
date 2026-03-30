@@ -10,6 +10,12 @@ namespace Pazario.Products.Application.Models.Commands.UpdateModel
     {
         public UpdateModelCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty()
+                .WithErrorCode(ModelErrors.NullValue.Code)
+                .NotEqual(Guid.Empty)
+                .WithErrorCode(ModelErrors.NullValue.Code);
+
             RuleFor (x => x.Name)
                 .NotEmpty()
                 .WithErrorCode(ModelErrors.NullValue.Code)

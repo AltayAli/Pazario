@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pazario.Products.Application.Markas.Queries.GetMarka
+﻿namespace Pazario.Products.Application.Markas.Queries.GetMarka
 {
     public class GetMarkaResponse
     {
