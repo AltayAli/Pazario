@@ -17,7 +17,7 @@ namespace Pazario.Products.Application.Products.Commands.UpdateProduct
         {
             if (request.ModelId.HasValue)
             {
-                bool modelExists = await _modelsRepository.SelectSimpleOrDefault(new FilteringOptions<Model>
+                bool modelExists = await _modelsRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Model>
                 {
                     Predicates = new List<Expression<Func<Model, bool>>>
                     {
@@ -31,7 +31,7 @@ namespace Pazario.Products.Application.Products.Commands.UpdateProduct
                 }
             }
 
-            var product = await _productsRepository.SelectSimpleOrDefault(new FilteringOptions<Product>
+            var product = await _productsRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Product>
             {
                 Predicates = new List<Expression<Func<Product, bool>>>
                 {
@@ -45,13 +45,10 @@ namespace Pazario.Products.Application.Products.Commands.UpdateProduct
                 return Result.Failure(ModelErrors.NotFound);
             }
 
-            product.Name = (Name)request.Name;
-            product.Description = request.Description;
-            product.ModelId = request.ModelId;
+            product.Update(request.Name, request.Description, request.ModelId);
 
-            await _productsRepository.Update(product);
-            product.AddDomainEvent(new ProductUpdateEvent(product.Id));
-            await _productsRepository.Update(product);
+            await _productsRepository.UpdateAsync(product, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
 

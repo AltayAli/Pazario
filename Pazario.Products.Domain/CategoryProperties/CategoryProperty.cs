@@ -5,19 +5,55 @@ using Pazario.Products.Domain.Common;
 
 namespace Pazario.Products.Domain.CategoryProperties
 {
-    public class CategoryProperty : BaseEntity
+    public sealed class CategoryProperty : BaseEntity
     {
-        public CategoryProperty()
+        private CategoryProperty()
         {
-           Values = new HashSet<CategoryPropertyValue>();
+            Values = new HashSet<CategoryPropertyValue>();
         }
-        public Guid CategoryId { get; set; }
-        public Category Category { get; set; }
-        public Name Name { get; set; }
-        public CategoryPropertyType Type { get; set; }
-        public bool AddToFilter { get; set; }
-        public bool IsRequired { get; set; }
-        public int DisplayOrder { get; set; }
-        public HashSet<CategoryPropertyValue> Values { get; set; }
+        public Guid CategoryId { get; private set; }
+        public Category Category { get; private set; }
+        public Name Name { get; private set; }
+        public CategoryPropertyType Type { get; private set; }
+        public bool AddToFilter { get; private set; }
+        public bool IsRequired { get; private set; }
+        public int DisplayOrder { get; private set; }
+        public HashSet<CategoryPropertyValue> Values { get; private set; }
+
+        public static CategoryProperty Create(
+                        Guid categoryId,
+                        string name,
+                        CategoryPropertyType type,
+                        bool addToFilter,
+                        bool isRequired,
+                        int displayOrder)
+        {
+            var categoryProperty = new CategoryProperty
+            {
+                CategoryId = categoryId,
+                Name = (Name)name,
+                Type = type,
+                AddToFilter = addToFilter,
+                IsRequired = isRequired,
+                DisplayOrder = displayOrder
+            };
+
+            return categoryProperty;
+        }
+
+        public CategoryProperty Update(
+                        string name,
+                        CategoryPropertyType type,
+                        bool addToFilter,
+                        bool isRequired,
+                        int displayOrder)
+        {
+            Name = (Name)name;
+            Type = type;
+            AddToFilter = addToFilter;
+            IsRequired = isRequired;
+            DisplayOrder = displayOrder;
+            return this;
+        }
     }
 }

@@ -2,7 +2,6 @@
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Categories;
 using Pazario.Products.Domain.CategoryProperties;
-using Pazario.Products.Domain.Common;
 using System.Linq.Expressions;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryProperty
@@ -15,38 +14,35 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryPr
     {
         public async Task<Result> Handle(AddCategoryPropertyCommand request, CancellationToken cancellationToken)
         {
+            var properties = await propertiesRepository.SelectAsync(new FilteringOptions<CategoryProperty>
+            {
+                Predicates = new List<Expression<Func<CategoryProperty, bool>>>
+                {
+                    prop => prop.CategoryId == request.CategoryId
+                },
+            });
+
             foreach (var item in request.Items)
             {
-
                 string normalizedName = item.Name.Trim().ToLower();
 
-                bool propertyAlreadyExists = await propertiesRepository.SelectSimpleOrDefault(new FilteringOptions<CategoryProperty>
-                {
-                    Predicates = new List<Expression<Func<CategoryProperty, bool>>>
-                {
-                    prop => prop.CategoryId == request.CategoryId &&
-                            prop.Name.Value.ToLower() == normalizedName &&
-                            prop.Type == item.Type
-                },
-                }) is not null;
-
+                bool propertyAlreadyExists = properties.Any(prop => prop.Name.Value.ToLower() == normalizedName && prop.Type == item.Type);
 
                 if (propertyAlreadyExists)
                 {
                     return Result.Failure(CategoryPropertyErrors.AlreadyExists);
                 }
 
-                var categoryProperty = new CategoryProperty
-                {
-                    Name = new Name(item.Name),
-                    Type = item.Type,
-                    AddToFilter = item.AddToFilter,
-                    IsRequired = item.IsRequired,
-                    DisplayOrder = item.DisplayOrder,
-                    CategoryId = request.CategoryId
-                };
+                var categoryProperty = CategoryProperty.Create(
+                    request.CategoryId,
+                    item.Name,
+                    item.Type,
+                    item.AddToFilter,
+                    item.IsRequired,
+                    item.DisplayOrder
+                );
 
-                await propertiesRepository.Insert(categoryProperty, cancellationToken);
+                await propertiesRepository.InsertAsync(categoryProperty, cancellationToken);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

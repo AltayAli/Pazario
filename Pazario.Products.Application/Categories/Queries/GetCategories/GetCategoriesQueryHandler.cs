@@ -19,7 +19,7 @@ namespace Pazario.Products.Application.Categories.Queries.GetCategories
                     m => m.ParentId == request.ParentId
                 },
                 Relations = new List<string> { "Children" }
-            });
+            },cancellationToken);
 
             var response = markas.Select(m => new GetCategoriesItemResponse
             {

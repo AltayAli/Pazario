@@ -1,22 +1,18 @@
 ﻿using Pazario.Products.Application.Abstractions.Messaging;
 using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Common;
 using Pazario.Products.Domain.Markas;
-using Pazario.Products.Domain.Markas.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Markas.Commands.UpdateMarka
 {
     public class UpdateMarkaCommandHandler
         (IMarkasRepository markasRepository,
+        IMarkaExistenceChecker markaExistenceChecker,
         IUnitOfWork unitOfWork)
         : ICommandHandler<UpdateMarkaCommand>
     {
         public async Task<Result> Handle(UpdateMarkaCommand request, CancellationToken cancellationToken)
         {
-            var marka = await markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
+            var marka = await markasRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Marka>
             {
                 Predicates = new List<System.Linq.Expressions.Expression<Func<Marka, bool>>> {
                     m => m.Id == request.Id
@@ -29,24 +25,16 @@ namespace Pazario.Products.Application.Markas.Commands.UpdateMarka
                 return Result.Failure(MarkaErrors.NotFound);
             }
 
-            string normalizedName = request.Name.Trim().ToLower();
+            bool markaExistsViaChecker = await markaExistenceChecker.ExistsAsync(request.Name, cancellationToken);
 
-            bool markaExists = markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
-            {
-                Predicates = new List<System.Linq.Expressions.Expression<Func<Marka, bool>>> {
-                    m => m.Name.Value.ToLower() == normalizedName
-                }
-            }, cancellationToken) is not null;
-
-            if (markaExists)
+            if (markaExistsViaChecker)
             {
                 return Result.Failure(MarkaErrors.AlreadyExists);
             }
 
-            marka.Name = (Name)request.Name;
+            marka.Update(request.Name);
 
-            await markasRepository.Update(marka);
-            marka.AddDomainEvent(new UpdateMarkaEvent(marka.Id));
+            await markasRepository.UpdateAsync(marka);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

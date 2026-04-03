@@ -11,12 +11,13 @@ namespace Pazario.Products.Application.Models.Commands.AddModel
     public class AddModelCommandHandler 
         (IMarkasRepository markasRepository,
         IModelsRepository modelsRepository,
+        IModelExistenceChecker modelExistenceChecker,
         IUnitOfWork unitOfWork)
         : ICommandHandler<AddModelCommand>
     {
         public async Task<Result> Handle(AddModelCommand request, CancellationToken cancellationToken)
         {
-            bool markaExists = markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
+            bool markaExists = markasRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Marka>
             {
                 Predicates = new List<Expression<Func<Marka, bool>>>
                 {
@@ -29,27 +30,16 @@ namespace Pazario.Products.Application.Models.Commands.AddModel
                 return Result.Failure(MarkaErrors.NotFound);
             }
 
-            string normalizedName = request.Name.Trim().ToLower();
-            bool modelExists = modelsRepository.SelectSimpleOrDefault(new FilteringOptions<Model>
-            {
-                Predicates = new List<Expression<Func<Model, bool>>> {
-                    m => m.Name.Value.ToLower() == normalizedName
-                }
-            }, cancellationToken) is not null;
+            var modelExistsViaChecker = await modelExistenceChecker.ExistsAsync(request.Name, cancellationToken);
 
-            if (modelExists)
+            if (modelExistsViaChecker)
             {
                 return Result.Failure(ModelErrors.AlreadyExists);
             }
 
-            var model = new Model
-            {
-                Name = (Name)request.Name,
-                MarkaId = request.MarkaId
-            };
+            var model = Model.Create(request.Name, request.MarkaId);
 
-            await modelsRepository.Insert(model);
-            model.AddDomainEvent(new AddModelEvent());
+            await modelsRepository.InsertAsync(model);
             await unitOfWork.SaveChangesAsync();
 
             return Result.Success();

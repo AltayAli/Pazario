@@ -10,7 +10,7 @@ namespace Pazario.Products.Application.Markas.Queries.GetMarka
     {
         public async Task<Result<GetMarkaResponse>> Handle(GetMarkaQuery request, CancellationToken cancellationToken)
         {
-            var marka = await markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
+            var marka = await markasRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Marka>
             {
                 Predicates = new List<Expression<Func<Marka, bool>>>
                 {

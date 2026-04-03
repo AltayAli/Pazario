@@ -24,13 +24,9 @@ namespace Pazario.Products.Application.CategoryPropertyValues.Commands
             { 
                 if(!values.Any(x => x.Value.Trim().ToLower() == item.Normalize()))
                 {
-                    var value = new CategoryPropertyValue
-                    {
-                        CategoryPropertyId = request.PropertyId,
-                        Value = item
-                    };
+                    var value = CategoryPropertyValue.Create(request.PropertyId, item);
 
-                    await _valuesRepository.Insert(value);
+                    await _valuesRepository.InsertAsync(value, cancellationToken);
                 }
             }
 

@@ -1,15 +1,29 @@
 ﻿using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.CategoryProperties;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.CategoryPropertyValues
 {
     public class CategoryPropertyValue : BaseEntity
     {
-        public Guid CategoryPropertyId { get; set; }
-        public CategoryProperty CategoryProperty { get; set; }
-        public string Value { get; set; }
+        private CategoryPropertyValue()
+        {
+        }
+        public Guid CategoryPropertyId { get; private set; }
+        public CategoryProperty CategoryProperty { get; private set; }
+        public string Value { get; private set; }
+
+        public static CategoryPropertyValue Create(Guid categoryPropertyId, string value)
+        {
+            return new CategoryPropertyValue
+            {
+                CategoryPropertyId = categoryPropertyId,
+                Value = value
+            };
+        }
+
+        public void Update(string value)
+        {
+            Value = value;
+        }
     }
 }

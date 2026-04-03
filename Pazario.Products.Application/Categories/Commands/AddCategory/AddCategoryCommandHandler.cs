@@ -18,7 +18,7 @@ namespace Pazario.Products.Application.Categories.Commands.AddCategory
         public async Task<Result> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
         {
             string normalizedName = request.Name.Trim().ToLower();
-            bool categoryExists = categoriesRepository.SelectSimpleOrDefault(new FilteringOptions<Category>
+            bool categoryExists = categoriesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Category>
             {
                 Predicates = new List<System.Linq.Expressions.Expression<Func<Category, bool>>> {
                     m => m.Name.Value.ToLower() == normalizedName && m.ParentId == request.ParentId
@@ -30,22 +30,9 @@ namespace Pazario.Products.Application.Categories.Commands.AddCategory
                 return Result.Failure(CategoryErrors.AlreadyExists);
             }
 
-            Icon? icon = null;
+            var category = Category.Create(request.Name, request.Icon, request.ParentId);
 
-            if (!string.IsNullOrWhiteSpace(request.Icon))
-            {
-                icon = new Icon(request.Icon);
-            }
-
-            var category = new Category
-            {
-                Name = new Name(request.Name),
-                ParentId = request.ParentId,
-                Icon = icon,
-            };
-
-            category.AddDomainEvent(new AddCategoryEvent());
-            await categoriesRepository.Insert(category,cancellationToken);
+            await categoriesRepository.InsertAsync(category,cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success(category);
         }

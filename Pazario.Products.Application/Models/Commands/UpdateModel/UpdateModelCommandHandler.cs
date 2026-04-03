@@ -9,12 +9,13 @@ namespace Pazario.Products.Application.Models.Commands.UpdateModel
 {
     public class UpdateModelCommandHandler (IModelsRepository modelsRepository,
                                 IMarkasRepository markasRepository,
+                                IModelExistenceChecker modelExistenceChecker,
                                 IUnitOfWork unitOfWork) : ICommandHandler<UpdateModelCommand>
     {
         public async Task<Result> Handle(UpdateModelCommand request, CancellationToken cancellationToken)
         {
 
-            bool markaExists = await markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
+            bool markaExists = await markasRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Marka>
             {
                 Predicates = new List<Expression<Func<Marka, bool>>>
                 {
@@ -28,20 +29,14 @@ namespace Pazario.Products.Application.Models.Commands.UpdateModel
             }
 
 
-            string normalizedName = request.Name.Trim().ToLower();
-            bool modelExists = modelsRepository.SelectSimpleOrDefault(new FilteringOptions<Model>
-            {
-                Predicates = new List<Expression<Func<Model, bool>>> {
-                    m => m.Name.Value.ToLower() == normalizedName
-                }
-            }, cancellationToken) is not null;
+            var modelExistsViaChecker = await modelExistenceChecker.ExistsAsync(request.Name, cancellationToken);
 
-            if (modelExists)
+            if (modelExistsViaChecker)
             {
                 return Result.Failure(ModelErrors.AlreadyExists);
             }
 
-            Model? model = await modelsRepository.SelectSimpleOrDefault(new FilteringOptions<Model>
+            Model? model = await modelsRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Model>
             {
                 Predicates = new List<Expression<Func<Model, bool>>>
                 {
@@ -52,10 +47,10 @@ namespace Pazario.Products.Application.Models.Commands.UpdateModel
             if (model is null) { 
                 return Result.Failure(ModelErrors.NotFound);
             }
-            model.MarkaId = request.MarkaId;
-            model.Name = (Name)request.Name;
 
-            await modelsRepository.Update(model,cancellationToken);
+            model.Update(request.Name, request.MarkaId);
+
+            await modelsRepository.UpdateAsync(model,cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();

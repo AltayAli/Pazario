@@ -1,8 +1,5 @@
 ﻿using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.ProductVariants;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.ProductVariantImages
 {

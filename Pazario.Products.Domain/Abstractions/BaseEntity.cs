@@ -37,5 +37,20 @@ namespace Pazario.Products.Domain.Abstractions
         {
             return this.MemberwiseClone();
         }
+        public void MarkAsAdded(Guid? addedBy, DateTime addedDate)
+        {
+            AddedById = addedBy;
+            AddedDate = addedDate;
+        }
+        public void MarkAsModified(Guid? modifiedBy, DateTime modifiedDate)
+        {
+            AddedById = modifiedBy;
+            AddedDate = modifiedDate;
+        }
+        public void MarkAsDeleted(Guid? deletedBy, DateTime deletedDate)
+        {
+            DeletedById = deletedBy;
+            DeletedDate = deletedDate;
+        }
     }
 }

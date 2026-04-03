@@ -16,7 +16,7 @@ namespace Pazario.Products.Application.Categories.Commands.RemoveCategory
     {
         public async Task<Result> Handle(RemoveCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await categoriesRepository.SelectSimpleOrDefault(new FilteringOptions<Category>
+            var category = await categoriesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Category>
             {
                 Predicates = new List<System.Linq.Expressions.Expression<Func<Category, bool>>> {
                     m => m.Id == request.Id
@@ -29,8 +29,9 @@ namespace Pazario.Products.Application.Categories.Commands.RemoveCategory
                 return Result.Failure(MarkaErrors.NotFound);
             }
 
-            category.AddDomainEvent(new RemoveCategoryEvent());
-            await categoriesRepository.Delete(category, cancellationToken);
+            category.Remove();
+
+            await categoriesRepository.DeleteAsync(category, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Success();
         }

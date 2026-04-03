@@ -1,10 +1,6 @@
 ﻿using Pazario.Products.Application.Abstractions.Messaging;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Markas;
-using Pazario.Products.Domain.Markas.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Markas.Commands.RemoveMarka
 {
@@ -15,7 +11,7 @@ namespace Pazario.Products.Application.Markas.Commands.RemoveMarka
     {
         public async Task<Result> Handle(RemoveMarkaCommand request, CancellationToken cancellationToken)
         {
-            var marka = await markasRepository.SelectSimpleOrDefault(new FilteringOptions<Marka>
+            var marka = await markasRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Marka>
             {
                 Predicates = new List<System.Linq.Expressions.Expression<Func<Marka, bool>>> {
                     m => m.Id == request.Id
@@ -28,8 +24,8 @@ namespace Pazario.Products.Application.Markas.Commands.RemoveMarka
                 return Result.Failure(MarkaErrors.NotFound);
             }
 
-            await markasRepository.Delete(marka, cancellationToken);
-            marka.AddDomainEvent(new RemoveMarkaEvent(marka.Id));
+            marka.Remove();
+            await markasRepository.DeleteAsync(marka, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
 

@@ -26,7 +26,7 @@ namespace Pazario.Products.Application.CategoryPropertyValues.UpdateCategoryProp
                 {
                     await UpdateCategoryPropertyValueAsync(values, item, cancellationToken);
                 }
-                else 
+                else
                 {
                     if (!values.Any(x => x.Value.Trim().ToLower() == item.Value.Normalize()))
                     {
@@ -45,29 +45,25 @@ namespace Pazario.Products.Application.CategoryPropertyValues.UpdateCategoryProp
         }
 
         private async Task InsertNewValueAsync(
-            UpdateCategoryPropertyValuesCommand request, 
-            UpdateCategoryPropertyValuesCommandItem item, 
+            UpdateCategoryPropertyValuesCommand request,
+            UpdateCategoryPropertyValuesCommandItem item,
             CancellationToken cancellationToken)
         {
-            var newValue = new CategoryPropertyValue
-            {
-                CategoryPropertyId = request.PropertyId,
-                Value = item.Value
-            };
+            var newValue = CategoryPropertyValue.Create(request.PropertyId, item.Value);
 
-            await _valuesRepository.Insert(newValue);
+            await _valuesRepository.InsertAsync(newValue);
         }
 
         private async Task UpdateCategoryPropertyValueAsync(
-                    IQueryable<CategoryPropertyValue> values, 
-                    UpdateCategoryPropertyValuesCommandItem item, 
+                    IQueryable<CategoryPropertyValue> values,
+                    UpdateCategoryPropertyValuesCommandItem item,
                     CancellationToken cancellationToken)
         {
             var value = values.FirstOrDefault(x => x.Id == item.Id);
             if (value is not null)
             {
-                value.Value = item.Value;
-                await _valuesRepository.Update(value);
+                value.Update(item.Value);
+                await _valuesRepository.UpdateAsync(value);
             }
         }
 
@@ -75,7 +71,8 @@ namespace Pazario.Products.Application.CategoryPropertyValues.UpdateCategoryProp
         {
             foreach (var value in removedValues)
             {
-                await _valuesRepository.Delete(value, cancellationToken);
+                await _valuesRepository.DeleteAsync(value, cancellationToken);
             }
         }
+    }
 }

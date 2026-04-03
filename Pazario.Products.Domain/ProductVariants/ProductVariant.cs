@@ -4,9 +4,6 @@ using Pazario.Products.Domain.Common;
 using Pazario.Products.Domain.Products;
 using Pazario.Products.Domain.ProductVariantImages;
 using Pazario.Products.Domain.ProductVariantProperties;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.ProductVariants
 {

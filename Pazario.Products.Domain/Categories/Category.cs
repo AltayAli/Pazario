@@ -1,24 +1,63 @@
 ﻿using Pazario.Products.Domain.Abstractions;
+using Pazario.Products.Domain.Categories.Events;
 using Pazario.Products.Domain.CategoryProperties;
 using Pazario.Products.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.Categories
 {
-    public class Category : BaseEntity
+    public sealed class Category : BaseEntity
     {
-        public Category()
+        private Category()
         {
             Properties = new HashSet<CategoryProperty>();
             Children = new HashSet<Category>();
         }
-        public Name Name { get; set; }
-        public Guid? ParentId { get; set; }
-        public Category Parent { get; set; }
-        public Icon? Icon { get; set; }
-        public HashSet<Category> Children { get; set; }
-        public HashSet<CategoryProperty> Properties { get; set; }
+        public Name Name { get; private set; }
+        public Guid? ParentId { get; private set; }
+        public Category Parent { get; private set; }
+        public Icon? Icon { get; private set; }
+        public HashSet<Category> Children { get; private set; }
+        public HashSet<CategoryProperty> Properties { get; private set; }
+
+        public static Category Create(string name, string icon, Guid? parentId = null)
+        {
+            var category = new Category
+            {
+                Name = (Name)name,
+                ParentId = parentId,
+                Icon = CreateIconInstance(icon)
+            };
+
+            category.AddDomainEvent(new AddCategoryEvent());
+
+            return category;
+        }
+
+        public Category Update(string name, string icon, Guid? parentId = null)
+        {
+            Name = (Name)name;
+            ParentId = parentId;
+            Icon = CreateIconInstance(icon);
+
+            AddDomainEvent(new UpdateCategoryEvent());
+            return this;
+        }
+
+        public void Remove()
+        {
+            AddDomainEvent(new RemoveCategoryEvent());
+        }
+
+        private static Icon? CreateIconInstance(string icon)
+        {
+            Icon? createdIcon = null;
+
+            if (!string.IsNullOrWhiteSpace(icon))
+            {
+                createdIcon = new Icon(icon);
+            }
+
+            return createdIcon;
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace Pazario.Products.Application.Products.Commands.AddProduct
         {
             if (request.ModelId.HasValue)
             {
-                bool modelExists = await _modelsRepository.SelectSimpleOrDefault(new FilteringOptions<Model>
+                bool modelExists = await _modelsRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Model>
                 {
                     Predicates = new List<Expression<Func<Model, bool>>>
                     {
@@ -32,14 +32,9 @@ namespace Pazario.Products.Application.Products.Commands.AddProduct
                 }
             }
 
-            var product = new Product
-            {
-                Name = (Name)request.Name,
-                Description = request.Description,
-                ModelId = request.ModelId
-            };
-            await _productsRepository.Insert(product);
-            product.AddDomainEvent(new ProductCreateEvent(product.Id));
+            var product = Product.Create(request.Name, request.Description, request.ModelId);
+
+            await _productsRepository.InsertAsync(product);
             await _unitOfWork.SaveChangesAsync();
             return Result.Success();
         }

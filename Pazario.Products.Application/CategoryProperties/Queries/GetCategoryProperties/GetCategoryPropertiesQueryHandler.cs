@@ -19,7 +19,7 @@ namespace Pazario.Products.Application.CategoryProperties.Queries.GetCategoryPro
                     m => m.CategoryId == request.CategoryId
                 },
                 Relations = new List<string> { "Values" }
-            });
+            }, cancellationToken);
 
             var response = categoryProperties.Select(m => new GetCategoryProperiesResponse
             {

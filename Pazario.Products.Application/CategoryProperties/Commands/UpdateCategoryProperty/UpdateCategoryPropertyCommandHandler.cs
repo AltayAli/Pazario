@@ -3,7 +3,6 @@ using Pazario.Products.Application.Exceptions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Categories;
 using Pazario.Products.Domain.CategoryProperties;
-using Pazario.Products.Domain.Common;
 using System.Linq.Expressions;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategoryProperty
@@ -63,25 +62,16 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
                 throw new UpdateCategoryPropertyAlreadyExistsException();
             }
 
-            var property = new CategoryProperty
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categoryId,
-                Name = new Name(item.Name),
-                Type = item.Type,
-                AddToFilter = item.AddToFilter,
-                IsRequired = item.IsRequired,
-                DisplayOrder = item.DisplayOrder
-            };
+            var property = CategoryProperty.Create(categoryId, item.Name, item.Type, item.AddToFilter, item.IsRequired, item.DisplayOrder);
 
-            await propertiesRepository.Insert(property, cancellationToken);
+            await propertiesRepository.InsertAsync(property, cancellationToken);
         }
 
         private async Task<bool> DoesCategoryPropertyExistAsync(Guid categoryId, string name, CategoryPropertyType type)
         {
             string normalizedName = name.Trim().ToLower();
 
-            bool propertyAlreadyExists = await propertiesRepository.SelectSimpleOrDefault(new FilteringOptions<CategoryProperty>
+            bool propertyAlreadyExists = await propertiesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<CategoryProperty>
             {
                 Predicates = new List<Expression<Func<CategoryProperty, bool>>>
                 {
@@ -102,19 +92,16 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
                 throw new UpdateCategoryPropertyAlreadyExistsException();
             }
 
-            property.Name = new Name(property.Name);
-            property.Type = property.Type;
-            property.AddToFilter = property.AddToFilter;
-            property.IsRequired = property.IsRequired;
-            property.DisplayOrder = property.DisplayOrder;
-            await propertiesRepository.Update(property, cancellationToken);
+            property.Update(property.Name, property.Type, property.AddToFilter, property.IsRequired, property.DisplayOrder);
+
+            await propertiesRepository.UpdateAsync(property, cancellationToken);
         }
 
         private async Task DeletePropertyAsync(List<CategoryProperty> properties, CancellationToken cancellationToken)
         {
             foreach (var property in properties)
             {
-                await propertiesRepository.Delete(property, cancellationToken);
+                await propertiesRepository.DeleteAsync(property, cancellationToken);
             }
         }
     }
