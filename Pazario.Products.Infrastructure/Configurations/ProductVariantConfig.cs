@@ -12,11 +12,13 @@ namespace Pazario.Products.Infrastructure.Configurations
             builder.ToTable("ProductVariants");
             builder.HasKey(x => x.Id);
 
+
             builder.OwnsOne(x => x.Sku, name =>
             {
                 name.Property(n => n.Value).HasColumnName("Sku").IsRequired();
+                name.HasIndex(n => n.Value).IsUnique();
             });
-
+            
             builder.OwnsOne(x => x.Barcode, name =>
             {
                 name.Property(n => n.Value).HasColumnName("Barcode").IsRequired();

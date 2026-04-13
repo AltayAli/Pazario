@@ -5,7 +5,7 @@ using Pazario.Products.Infrastructure.Data;
 
 namespace Pazario.Products.Infrastructure.Repositories
 {
-    public sealed class ProductVariantPropertiesRepositories(
+    public sealed class ProductVariantPropertiesRepository(
         ProductsDbContext dataContext,
         IHttpContextAccessor httpContextAccessor,
         IDateTimeProvider dateTimeProvider)

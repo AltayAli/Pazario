@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,11 +8,18 @@ using Pazario.Products.Application.Abstractions;
 using Pazario.Products.Application.Behaviours;
 using Pazario.Products.Application.Caching;
 using Pazario.Products.Application.Markas;
+using Pazario.Products.Application.Models;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Infrastructure.Caching;
 using Pazario.Products.Infrastructure.Clock;
 using Pazario.Products.Infrastructure.Data;
 using Pazario.Products.Infrastructure.Helpers;
+using Pazario.Products.Presentation.Categories;
+using Pazario.Products.Presentation.Categories.Mapping;
+using Pazario.Products.Presentation.CategoryProperties;
+using Pazario.Products.Presentation.Markas;
+using Pazario.Products.Presentation.Models;
+using Pazario.Products.Presentation.Products;
 
 namespace Pazario.Products.Infrastructure
 {
@@ -30,12 +38,15 @@ namespace Pazario.Products.Infrastructure
 
             services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
 
+            services.AddScoped<IMarkaExistenceChecker, MarkaExistenceChecker>();
+            services.AddScoped<IModelExistenceChecker, ModelExistenceChecker>();
             AddInfrastructure(services, configuration);
             AddCahce(services, configuration);
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(CategoryMappingProfile).Assembly));
         }
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddHttpContextAccessor();
             
             services.AddDbContext<ProductsDbContext>(options =>
@@ -56,6 +67,18 @@ namespace Pazario.Products.Infrastructure
             services.AddSingleton<ICacheService, CacheService>();
 
             return services;
+        }
+
+        public static IEndpointRouteBuilder MapProductModuleEndpoints(this IEndpointRouteBuilder app)
+        {
+            app.MapCategoryEndpoints();
+            app.MapCategoryPropertyEndpoints();
+            app.MapMarkaEndpoints();
+            app.MapModelEndpoints();
+            app.MapProductEndpoints();
+            app.MapProductVariantEndpoints();
+
+            return app;
         }
 
         private static void AddRepositories(this IServiceCollection services)

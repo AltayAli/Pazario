@@ -6,7 +6,8 @@ namespace Pazario.Products.Application.Products.Commands.UpdateProduct
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public Guid? ModelId { get; set; }
         public string Description { get; set; }
+        public Guid? ModelId { get; set; }
+        public List<Guid> CategoryIds { get; set; } = new();
     }
 }

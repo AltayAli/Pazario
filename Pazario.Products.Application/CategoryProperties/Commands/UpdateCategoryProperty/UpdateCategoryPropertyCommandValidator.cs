@@ -45,4 +45,3 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
         }
     }
 }
-}

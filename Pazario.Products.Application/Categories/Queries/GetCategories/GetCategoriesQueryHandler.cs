@@ -16,7 +16,7 @@ namespace Pazario.Products.Application.Categories.Queries.GetCategories
                 Predicates = new List<Expression<Func<Category, bool>>>
                 {
                     m => string.IsNullOrEmpty(request.Key) || m.Name.Value.Contains(request.Key) ,
-                    m => m.ParentId == request.ParentId
+                    m => request.ParentId == null || m.ParentId == request.ParentId
                 },
                 Relations = new List<string> { "Children" }
             },cancellationToken);

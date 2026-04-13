@@ -21,7 +21,7 @@ namespace Pazario.Products.Application.Products.Commands.UpdateProduct
                 .WithErrorCode(ProductErrors.MaxLenght.Code);
 
             RuleFor(x => x.Description)
-                .MaximumLength(100)
+                .MaximumLength(2000)
                 .WithErrorCode(ProductErrors.MaxLenght.Code);
         }
     }

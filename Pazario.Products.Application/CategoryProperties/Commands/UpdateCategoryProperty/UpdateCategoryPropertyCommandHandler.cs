@@ -1,7 +1,6 @@
 ﻿using Pazario.Products.Application.Abstractions.Messaging;
 using Pazario.Products.Application.Exceptions;
 using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Categories;
 using Pazario.Products.Domain.CategoryProperties;
 using System.Linq.Expressions;
 
@@ -9,10 +8,9 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
 {
     public class UpdateCategoryPropertyCommandHandler
             (ICategoryPropertiesRepository propertiesRepository,
-            ICategoriesRepository categoriesRepository,
-            IUnitOfWork unitOfWork) : ICommandHandler<UpdateCategoryPropertyCommand>
+            IUnitOfWork unitOfWork) : ICommandHandler<UpdateCategoryPropertyCommand, List<Guid>>
     {
-        public async Task<Result> Handle(UpdateCategoryPropertyCommand request, CancellationToken cancellationToken)
+        public async Task<Result<List<Guid>>> Handle(UpdateCategoryPropertyCommand request, CancellationToken cancellationToken)
         {
             var properties = await propertiesRepository.SelectAsync(new FilteringOptions<CategoryProperty>
             {
@@ -22,11 +20,14 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
                 },
             }, cancellationToken);
 
+            var propertyIds = new List<Guid>();
+
             foreach (var item in request.Items)
             {
-                if(item.Id is null)
+                if (item.Id is null)
                 {
-                    await InsertPropertyAsync(request.CategoryId, item, cancellationToken);
+                    var newId = await InsertPropertyAsync(request.CategoryId, item, cancellationToken);
+                    propertyIds.Add(newId);
                 }
                 else
                 {
@@ -34,26 +35,27 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
 
                     if (property is null)
                     {
-                        return Result.Failure(CategoryPropertyErrors.NotFound);
+                        return Result.Failure<List<Guid>>(propertyIds, CategoryPropertyErrors.NotFound);
                     }
 
-                    await UpdatePropertyAsync(request.CategoryId, property, cancellationToken);
+                    await UpdatePropertyAsync(request.CategoryId, property, item, cancellationToken);
+                    propertyIds.Add(property.Id);
                 }
             }
 
             var removedProperties = properties.Where(p => !request.Items.Any(i => i.Id == p.Id)).ToList();
 
-            if (removedProperties.Any()) 
-            { 
-               await DeletePropertyAsync(removedProperties, cancellationToken);
+            if (removedProperties.Any())
+            {
+                await DeletePropertyAsync(removedProperties, cancellationToken);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Success();
+            return Result.Success(propertyIds);
         }
 
-        private async Task InsertPropertyAsync(Guid categoryId,UpdateCategoryPropertyCommandItem item, CancellationToken cancellationToken)
+        private async Task<Guid> InsertPropertyAsync(Guid categoryId, UpdateCategoryPropertyCommandItem item, CancellationToken cancellationToken)
         {
             bool propertyAlreadyExists = await DoesCategoryPropertyExistAsync(categoryId, item.Name, item.Type);
 
@@ -65,6 +67,8 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
             var property = CategoryProperty.Create(categoryId, item.Name, item.Type, item.AddToFilter, item.IsRequired, item.DisplayOrder);
 
             await propertiesRepository.InsertAsync(property, cancellationToken);
+
+            return property.Id;
         }
 
         private async Task<bool> DoesCategoryPropertyExistAsync(Guid categoryId, string name, CategoryPropertyType type)
@@ -83,16 +87,16 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategor
             return propertyAlreadyExists;
         }
 
-        private async Task UpdatePropertyAsync(Guid categoryId, CategoryProperty property, CancellationToken cancellationToken)
+        private async Task UpdatePropertyAsync(Guid categoryId, CategoryProperty property, UpdateCategoryPropertyCommandItem item, CancellationToken cancellationToken)
         {
-            bool propertyAlreadyExists = await DoesCategoryPropertyExistAsync(categoryId, property.Name, property.Type);
+            bool propertyAlreadyExists = await DoesCategoryPropertyExistAsync(categoryId, item.Name, item.Type);
 
             if (propertyAlreadyExists)
             {
                 throw new UpdateCategoryPropertyAlreadyExistsException();
             }
 
-            property.Update(property.Name, property.Type, property.AddToFilter, property.IsRequired, property.DisplayOrder);
+            property.Update(item.Name, item.Type, item.AddToFilter, item.IsRequired, item.DisplayOrder);
 
             await propertiesRepository.UpdateAsync(property, cancellationToken);
         }

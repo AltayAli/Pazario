@@ -37,10 +37,14 @@ namespace Pazario.Products.Infrastructure.Repositories
         }
 
         public virtual Task<IQueryable<TEntity>> SelectAsync(FilteringOptions<TEntity> listingOptions = null, CancellationToken cancellationToken = default)
-                => Task.Run(() => Select(listingOptions), cancellationToken);
+        {
+            ArgumentNullException.ThrowIfNull(listingOptions);
+            return Task.Run(() => Select(listingOptions), cancellationToken);
+        }
+
         public virtual IQueryable<TEntity> Select(FilteringOptions<TEntity> listingOptions = null)
         {
-            IQueryable<TEntity?> queryable;
+            IQueryable<TEntity> queryable;
 
             queryable = EntityDbSet.AsQueryable();
 
@@ -68,7 +72,7 @@ namespace Pazario.Products.Infrastructure.Repositories
             return queryable.OrderByDescending(x => x.AddedDate);
         }
 
-        public virtual async Task<TEntity?> InsertAsync(TEntity? model, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity?> InsertAsync(TEntity model, CancellationToken cancellationToken = default)
         {
             model.MarkAsAdded(HttpContextAccesor.GetUserId(), DateTimeProvider.UtcNow);
             await EntityDbSet.AddAsync(model, cancellationToken);
@@ -132,8 +136,12 @@ namespace Pazario.Products.Infrastructure.Repositories
 
         public virtual async Task<TEntity?> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            TEntity model = entity.Clone() as TEntity;
-            if (entity == null)
+            TEntity? model = entity.Clone() as TEntity;
+
+            if (entity is null)
+                throw new NullReferenceException();
+
+            if (model is null)
                 throw new NullReferenceException();
 
             model.MarkAsDeleted(HttpContextAccesor.GetUserId(), DateTimeProvider.UtcNow);

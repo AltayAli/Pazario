@@ -19,6 +19,10 @@ namespace Pazario.Products.Application.Markas.Queries.GetMarka
                 Relations = new List<string> { "Models" }
             });
 
+            if (marka == null) {
+                return Result.Failure<GetMarkaResponse>(value: null, MarkaErrors.NotFound);
+            }
+
             return Result.Success(new GetMarkaResponse
             {
                 Id = marka.Id,

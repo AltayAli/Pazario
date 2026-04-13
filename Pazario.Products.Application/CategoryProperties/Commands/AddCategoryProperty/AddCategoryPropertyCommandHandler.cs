@@ -1,18 +1,16 @@
 ﻿using Pazario.Products.Application.Abstractions.Messaging;
 using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Categories;
 using Pazario.Products.Domain.CategoryProperties;
 using System.Linq.Expressions;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryProperty
 {
-    public class AddCategoryPropertyCommandHandler 
+    public class AddCategoryPropertyCommandHandler
             (ICategoryPropertiesRepository propertiesRepository,
-            ICategoriesRepository cachedCategoriesRepository,
             IUnitOfWork unitOfWork)
-        : ICommandHandler<AddCategoryPropertyCommand>
+        : ICommandHandler<AddCategoryPropertyCommand, List<Guid>>
     {
-        public async Task<Result> Handle(AddCategoryPropertyCommand request, CancellationToken cancellationToken)
+        public async Task<Result<List<Guid>>> Handle(AddCategoryPropertyCommand request, CancellationToken cancellationToken)
         {
             var properties = await propertiesRepository.SelectAsync(new FilteringOptions<CategoryProperty>
             {
@@ -22,6 +20,8 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryPr
                 },
             });
 
+            var createdIds = new List<Guid>();
+
             foreach (var item in request.Items)
             {
                 string normalizedName = item.Name.Trim().ToLower();
@@ -30,7 +30,7 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryPr
 
                 if (propertyAlreadyExists)
                 {
-                    return Result.Failure(CategoryPropertyErrors.AlreadyExists);
+                    return Result.Failure<List<Guid>>(createdIds, CategoryPropertyErrors.AlreadyExists);
                 }
 
                 var categoryProperty = CategoryProperty.Create(
@@ -43,11 +43,12 @@ namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryPr
                 );
 
                 await propertiesRepository.InsertAsync(categoryProperty, cancellationToken);
+                createdIds.Add(categoryProperty.Id);
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Success();
+            return Result.Success(createdIds);
         }
     }
 }

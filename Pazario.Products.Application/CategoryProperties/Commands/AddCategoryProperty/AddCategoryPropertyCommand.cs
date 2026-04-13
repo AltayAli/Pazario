@@ -3,7 +3,7 @@ using Pazario.Products.Domain.CategoryProperties;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryProperty
 {
-    public record AddCategoryPropertyCommand : ICommand
+    public record AddCategoryPropertyCommand : ICommand<List<Guid>>
     {
         public AddCategoryPropertyCommand()
         {

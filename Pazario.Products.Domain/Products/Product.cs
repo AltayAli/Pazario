@@ -12,6 +12,7 @@ namespace Pazario.Products.Domain.Products
         private Product()
         {
             ProductCategories = new HashSet<ProductCategory>();
+            Variants = new HashSet<ProductVariant>();
         }
         public Name Name { get; private set; }
         public Guid? ModelId { get; private set; }

@@ -1,4 +1,4 @@
-﻿using Pazario.Products.Domain.Abstractions;
+using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.CategoryPropertyValues;
 using Pazario.Products.Domain.Common;
 using Pazario.Products.Domain.Products;
@@ -15,7 +15,8 @@ namespace Pazario.Products.Domain.ProductVariants
             Images = new HashSet<ProductVariantImage>();
             Properties = new HashSet<ProductVariantProperty>();
         }
-        public long ProductId { get; private set; }
+
+        public Guid ProductId { get; private set; }
         public Product Product { get; private set; }
         public Sku Sku { get; private set; }
         public Barcode Barcode { get; private set; }
@@ -31,5 +32,64 @@ namespace Pazario.Products.Domain.ProductVariants
         public HashSet<ProductVariantImage> Images { get; private set; }
         public HashSet<CategoryPropertyValue> CategoryPropertyValues { get; private set; }
         public HashSet<ProductVariantProperty> Properties { get; private set; }
+
+        public ProductVariant Update(
+            string sku,
+            string barcode,
+            Money price,
+            Money? cost,
+            decimal? taxRate,
+            int stockQuantity,
+            bool isDefault,
+            bool isActive,
+            Money discountCount,
+            DateTime? discountStartDate,
+            DateTime? discountEndDate)
+        {
+            Sku = new Sku(sku);
+            Barcode = new Barcode(barcode);
+            Price = price;
+            Cost = cost;
+            TaxRate = taxRate;
+            Stock = new Stock(stockQuantity);
+            IsDefault = isDefault;
+            IsActive = isActive;
+            DiscountCount = discountCount;
+            DiscountStartDate = discountStartDate;
+            DiscountEndDate = discountEndDate;
+            return this;
+        }
+
+        public static ProductVariant Create(
+            Guid productId,
+            string sku,
+            string barcode,
+            Money price,
+            Money? cost,
+            decimal? taxRate,
+            int stockQuantity,
+            bool isDefault,
+            bool isActive,
+            Money discountCount,
+            DateTime? discountStartDate,
+            DateTime? discountEndDate)
+        {
+            return new ProductVariant
+            {
+                Id = Guid.NewGuid(),
+                ProductId = productId,
+                Sku = new Sku(sku),
+                Barcode = new Barcode(barcode),
+                Price = price,
+                Cost = cost,
+                TaxRate = taxRate,
+                Stock = new Stock(stockQuantity),
+                IsDefault = isDefault,
+                IsActive = isActive,
+                DiscountCount = discountCount,
+                DiscountStartDate = discountStartDate,
+                DiscountEndDate = discountEndDate
+            };
+        }
     }
 }

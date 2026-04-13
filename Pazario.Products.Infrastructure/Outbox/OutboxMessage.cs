@@ -6,6 +6,10 @@ namespace Pazario.Products.Infrastructure.Outbox
 {
     public class OutboxMessage
     {
+        public OutboxMessage()
+        {
+            
+        }
         public OutboxMessage(string content,
             string type,
             DateTime occuredOnUtc)

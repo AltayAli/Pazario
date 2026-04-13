@@ -1,12 +1,6 @@
 ﻿using Pazario.Products.Application.Abstractions.Messaging;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Categories;
-using Pazario.Products.Domain.Categories.Events;
-using Pazario.Products.Domain.Common;
-using Pazario.Products.Domain.Markas;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Categories.Commands.AddCategory
 {
@@ -16,9 +10,24 @@ namespace Pazario.Products.Application.Categories.Commands.AddCategory
         : ICommandHandler<AddCategoryCommand>
     {
         public async Task<Result> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
-        {
+        {            
+            if(request.ParentId is not null)
+            {
+                bool parentExists = await categoriesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Category>
+                {
+                    Predicates = new List<System.Linq.Expressions.Expression<Func<Category, bool>>> {
+                        m => m.Id == request.ParentId
+                    }
+                }, cancellationToken) is not null;
+
+                if (!parentExists)
+                {
+                    return Result.Failure(CategoryErrors.ParentCategoryNotFound);
+                }
+            }
+
             string normalizedName = request.Name.Trim().ToLower();
-            bool categoryExists = categoriesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Category>
+            bool categoryExists = await categoriesRepository.SelectSimpleOrDefaultAsync(new FilteringOptions<Category>
             {
                 Predicates = new List<System.Linq.Expressions.Expression<Func<Category, bool>>> {
                     m => m.Name.Value.ToLower() == normalizedName && m.ParentId == request.ParentId
@@ -29,6 +38,8 @@ namespace Pazario.Products.Application.Categories.Commands.AddCategory
             {
                 return Result.Failure(CategoryErrors.AlreadyExists);
             }
+
+
 
             var category = Category.Create(request.Name, request.Icon, request.ParentId);
 
