@@ -1,10 +1,7 @@
-﻿using Pazario.Products.Application.Abstractions.Messaging;
+﻿using Pazario.Common.Application.Abstractions.Messaging;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Markas;
 using Pazario.Products.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Models.Commands.RemoveModel
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Pazario.Products.Application.Abstractions;
+using Pazario.Common.Application.Abstractions;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Infrastructure.Outbox;
 

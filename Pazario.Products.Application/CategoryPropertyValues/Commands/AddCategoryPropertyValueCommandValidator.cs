@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
 using Pazario.Products.Domain.CategoryPropertyValues;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.CategoryPropertyValues.Commands
 {

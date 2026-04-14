@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pazario.Products.Application.Caching
+﻿namespace Pazario.Products.Application.Caching
 {
     public static class CacheKeys
     {

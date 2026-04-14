@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Pazario.Common.Infrastructure\Pazario.Common.Infrastructure.csproj" />
 		<ProjectReference Include="..\Pazario.Products.Infrastructure\Pazario.Products.Infrastructure.csproj" />
 	</ItemGroup>
 

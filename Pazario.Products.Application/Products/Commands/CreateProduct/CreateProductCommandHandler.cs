@@ -1,4 +1,5 @@
-using Pazario.Products.Application.Abstractions.Messaging;
+using Pazario.Common.Application.Abstractions.Messaging;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Models;
 using Pazario.Products.Domain.ProductCategories;

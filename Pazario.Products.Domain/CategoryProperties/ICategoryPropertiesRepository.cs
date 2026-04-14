@@ -1,7 +1,4 @@
-﻿using Pazario.Products.Domain.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Pazario.Common.Domain.Abstractions;
 
 namespace Pazario.Products.Domain.CategoryProperties
 {

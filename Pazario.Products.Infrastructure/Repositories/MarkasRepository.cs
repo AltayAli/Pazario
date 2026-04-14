@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Pazario.Products.Application.Abstractions;
+using Pazario.Common.Application.Abstractions;
+using Pazario.Common.Infrastructure.Repositories;
 using Pazario.Products.Domain.Markas;
 using Pazario.Products.Infrastructure.Data;
 
@@ -9,5 +10,5 @@ namespace Pazario.Products.Infrastructure.Repositories
         ProductsDbContext dataContext,
         IHttpContextAccessor httpContextAccessor,
         IDateTimeProvider dateTimeProvider)
-        : BaseRepository<Marka>(dataContext, httpContextAccessor, dateTimeProvider), IMarkasRepository;
+        : BaseRepository<Marka,ProductsDbContext>(dataContext, httpContextAccessor, dateTimeProvider), IMarkasRepository;
 }

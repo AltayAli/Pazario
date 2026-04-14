@@ -1,9 +1,7 @@
 ﻿using MediatR;
+using Pazario.Common.Application.Caching;
 using Pazario.Products.Application.Caching;
 using Pazario.Products.Domain.Markas.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Markas.Commands.UpdateMarka
 {

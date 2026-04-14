@@ -1,5 +1,5 @@
-﻿using Pazario.Products.Application.Markas;
-using Pazario.Products.Domain.Abstractions;
+﻿using Pazario.Common.Domain.Abstractions;
+using Pazario.Products.Application.Markas;
 using Pazario.Products.Domain.Markas;
 
 namespace Pazario.Products.Infrastructure.Helpers

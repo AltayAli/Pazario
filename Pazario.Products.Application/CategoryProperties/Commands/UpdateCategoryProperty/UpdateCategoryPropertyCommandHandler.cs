@@ -1,5 +1,6 @@
-﻿using Pazario.Products.Application.Abstractions.Messaging;
-using Pazario.Products.Application.Exceptions;
+﻿using Pazario.Common.Application.Abstractions.Messaging;
+using Pazario.Common.Application.Exceptions;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.CategoryProperties;
 using System.Linq.Expressions;

@@ -1,5 +1,5 @@
-﻿using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Common;
+﻿using Pazario.Common.Domain.Abstractions;
+using Pazario.Common.Domain.ValueObjects;
 using Pazario.Products.Domain.Models;
 using Pazario.Products.Domain.ProductCategories;
 using Pazario.Products.Domain.Products.Events;

@@ -1,4 +1,4 @@
-﻿using Pazario.Products.Domain.Abstractions;
+﻿using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.CategoryProperties;
 
 namespace Pazario.Products.Domain.CategoryPropertyValues

@@ -1,4 +1,4 @@
-using Pazario.Products.Domain.Abstractions;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.ProductVariants;
 
 namespace Pazario.Products.Domain.ProductVariantImages

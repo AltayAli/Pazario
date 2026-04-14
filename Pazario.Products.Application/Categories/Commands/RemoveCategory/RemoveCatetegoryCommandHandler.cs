@@ -1,11 +1,8 @@
-﻿using Pazario.Products.Application.Abstractions.Messaging;
+﻿using Pazario.Common.Application.Abstractions.Messaging;
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.Categories;
-using Pazario.Products.Domain.Categories.Events;
 using Pazario.Products.Domain.Markas;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Application.Categories.Commands.RemoveCategory
 {

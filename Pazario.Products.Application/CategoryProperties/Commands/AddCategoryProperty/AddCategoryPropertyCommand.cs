@@ -1,4 +1,4 @@
-﻿using Pazario.Products.Application.Abstractions.Messaging;
+﻿using Pazario.Common.Application.Abstractions.Messaging;
 using Pazario.Products.Domain.CategoryProperties;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.AddCategoryProperty

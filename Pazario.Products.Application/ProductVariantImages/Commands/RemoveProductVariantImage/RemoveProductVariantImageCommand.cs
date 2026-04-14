@@ -1,4 +1,4 @@
-using Pazario.Products.Application.Abstractions.Messaging;
+using Pazario.Common.Application.Abstractions.Messaging;
 
 namespace Pazario.Products.Application.ProductVariantImages.Commands.RemoveProductVariantImage
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Pazario.Products.Domain.Common;
+using Pazario.Common.Domain.ValueObjects;
 using Pazario.Products.Domain.ProductVariants;
 
 namespace Pazario.Products.Infrastructure.Configurations

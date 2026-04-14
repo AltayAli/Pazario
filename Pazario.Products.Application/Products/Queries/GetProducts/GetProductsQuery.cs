@@ -1,4 +1,4 @@
-using Pazario.Products.Application.Abstractions.Messaging;
+using Pazario.Common.Application.Abstractions.Messaging;
 using Pazario.Products.Application.Caching;
 
 namespace Pazario.Products.Application.Products.Queries.GetProducts

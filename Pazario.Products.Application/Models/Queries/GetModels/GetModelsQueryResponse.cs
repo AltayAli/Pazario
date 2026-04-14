@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pazario.Products.Application.Models.Queries.GetModels
+﻿namespace Pazario.Products.Application.Models.Queries.GetModels
 {
     public class GetModelsQueryResponse
     {

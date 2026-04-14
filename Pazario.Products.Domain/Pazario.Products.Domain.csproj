@@ -11,4 +11,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Pazario.Common.Domain\Pazario.Common.Domain.csproj" />
+	</ItemGroup>
 </Project>

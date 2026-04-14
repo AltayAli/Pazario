@@ -1,9 +1,16 @@
 using Asp.Versioning;
 using Pazario.API.OpenApi;
+using Pazario.Common.Infrastructure;
+using Pazario.Common.Infrastructure.Extensions;
 using Pazario.Products.Infrastructure;
-using Pazario.Products.Infrastructure.Extensions;
+using Pazario.Products.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationConfiguration(builder.Configuration, new[]
+{
+    typeof(Pazario.Products.Application.AssemblyReference).Assembly
+});
 
 builder.Services.AddProductModule(builder.Configuration);
 
@@ -40,7 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.ApplyProductsMigrations();
+app.ApplyProductsMigrations<ProductsDbContext>();
 app.UseHttpsRedirection();
 
 app.MapProductModuleEndpoints();

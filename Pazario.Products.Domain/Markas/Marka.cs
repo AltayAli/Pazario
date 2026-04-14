@@ -1,9 +1,6 @@
-﻿using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Common;
+﻿using Pazario.Common.Domain.Abstractions;
+using Pazario.Common.Domain.ValueObjects;
 using Pazario.Products.Domain.Markas.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pazario.Products.Domain.Markas
 {

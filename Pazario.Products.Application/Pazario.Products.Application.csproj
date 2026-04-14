@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Pazario.Common.Application\Pazario.Common.Application.csproj" />
       <ProjectReference Include="..\Pazario.Products.Domain\Pazario.Products.Domain.csproj" />
     </ItemGroup>
 

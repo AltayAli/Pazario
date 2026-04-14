@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pazario.Products.Infrastructure.Outbox
+﻿namespace Pazario.Products.Infrastructure.Outbox
 {
     public class OutboxMessage
     {

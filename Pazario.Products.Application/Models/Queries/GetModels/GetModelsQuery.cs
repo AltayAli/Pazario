@@ -1,7 +1,4 @@
-﻿using Pazario.Products.Application.Abstractions.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Pazario.Common.Application.Abstractions.Messaging;
 
 namespace Pazario.Products.Application.Models.Queries.GetModels
 {

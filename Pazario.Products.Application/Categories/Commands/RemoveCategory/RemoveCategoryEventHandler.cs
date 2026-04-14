@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Pazario.Common.Application.Caching;
 using Pazario.Products.Application.Caching;
 using Pazario.Products.Domain.Categories.Events;
 

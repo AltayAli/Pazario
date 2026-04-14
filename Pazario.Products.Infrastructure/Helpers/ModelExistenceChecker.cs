@@ -1,5 +1,5 @@
-﻿using Pazario.Products.Application.Models;
-using Pazario.Products.Domain.Abstractions;
+﻿using Pazario.Common.Domain.Abstractions;
+using Pazario.Products.Application.Models;
 using Pazario.Products.Domain.Models;
 using System.Linq.Expressions;
 

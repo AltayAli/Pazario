@@ -3,6 +3,11 @@
   <Folder Name="/src/API/">
     <Project Path="Pazario.API/Pazario.API.csproj" Id="a553691d-bf03-4bd9-8e0b-499538a14d47" />
   </Folder>
+  <Folder Name="/src/Common/">
+    <Project Path="Pazario.Common.Application/Pazario.Common.Application.csproj" Id="69a80c41-7db4-43db-aa26-9ecded85b782" />
+    <Project Path="Pazario.Common.Domain/Pazario.Common.Domain.csproj" Id="496e6d3e-5bfa-4bd0-9fc1-98cf5d550d17" />
+    <Project Path="Pazario.Common.Infrastructure/Pazario.Common.Infrastructure.csproj" Id="43f1764e-a43e-4aa3-8c9f-a813d995b891" />
+  </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Product/">
     <Project Path="Pazario.Products.Application/Pazario.Products.Application.csproj" Id="339f879a-6a1a-4dde-b374-a1e359b3c495" />

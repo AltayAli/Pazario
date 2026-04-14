@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Pazario.Products.Application.CategoryProperties.Commands.AddCategoryProperty;
 using Pazario.Products.Domain.CategoryProperties;
 
 namespace Pazario.Products.Application.CategoryProperties.Commands.UpdateCategoryProperty

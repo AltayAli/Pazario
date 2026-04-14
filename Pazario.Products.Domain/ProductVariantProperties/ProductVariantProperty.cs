@@ -1,3 +1,4 @@
+using Pazario.Common.Domain.Abstractions;
 using Pazario.Products.Domain.Abstractions;
 using Pazario.Products.Domain.CategoryProperties;
 using Pazario.Products.Domain.ProductVariants;

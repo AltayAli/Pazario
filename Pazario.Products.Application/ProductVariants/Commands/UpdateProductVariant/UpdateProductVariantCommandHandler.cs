@@ -1,6 +1,7 @@
-using Pazario.Products.Application.Abstractions.Messaging;
+using Pazario.Common.Application.Abstractions.Messaging;
+using Pazario.Common.Domain.Abstractions;
+using Pazario.Common.Domain.ValueObjects;
 using Pazario.Products.Domain.Abstractions;
-using Pazario.Products.Domain.Common;
 using Pazario.Products.Domain.ProductVariantImages;
 using Pazario.Products.Domain.ProductVariantProperties;
 using Pazario.Products.Domain.ProductVariants;

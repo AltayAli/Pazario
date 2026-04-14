@@ -1,7 +1,7 @@
-﻿using Pazario.Products.Domain.Abstractions;
+﻿using Pazario.Common.Domain.Abstractions;
+using Pazario.Common.Domain.ValueObjects;
 using Pazario.Products.Domain.Categories.Events;
 using Pazario.Products.Domain.CategoryProperties;
-using Pazario.Products.Domain.Common;
 
 namespace Pazario.Products.Domain.Categories
 {
